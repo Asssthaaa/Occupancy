@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Occupancy Prediction API</title>
+  <style>
+    /* Style for the entire body */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-image: url('office_room.jpeg'); 
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Style for the header section (home page content) */
+    header {
+      text-align: center;
+      padding: 50px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.5;
+    }
+
+    /* Style for the navigation bar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin: 20px auto;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+    }
+
+    nav a {
+      text-decoration: none;
+      padding: 10px;
+      color: black;
+      font-weight: bold;
+    }
+
+    nav a.active {
+      background-color: #ddd;
+    }
+
+    /* Style for the prediction section (form and button) */
+    
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Occupancy Prediction API</h1>
+    <p>Predict room occupancy based on sensor data.</p>
+  </header>
+
+  <nav>
+    <a href="#" class="active">Home</a>
+    <a href="#prediction">Prediction</a>
+  </nav>
+
+  <section id="prediction">
+    <h2>Prediction Form</h2>
+    <fieldset>
+      <legend>Enter Sensor Data</legend>
+      <label for="room_id">Room ID (integer):</label>
+      <input type="number" id="room_id" placeholder="Enter room ID">
+      <label for="datetime">Datetime (YYYY-MM-DD HH:MM:SS):</label>
+      <input type="text" id="datetime" placeholder="Enter datetime">
+      <label for="temperature">Temperature (°C):</label>
+      <input type="number" id="temperature" placeholder="Enter temperature">
+      <label for="humidity">Humidity (%):</label>
+      <input type="number" id="humidity" placeholder="Enter humidity">
+      <label for="co2">CO2 (ppm):</label>
+      <input type="number" id="co2" placeholder="Enter CO2 level">
+      <label for="light">Light (lux):</label>
+      <input type="number" id="light" placeholder="Enter light level">
+      <label for="pir_class">PIR Class (optional):</label>
+      <input type="text" id="pir_class" placeholder="Enter PIR class (optional)">
+    </fieldset>
+    <button onclick="predictOccupancy()">Predict Occupancy</button>
+    <p id="prediction"></p>
+  </section>
+  <script>
+    function predictOccupancy() {
+      // Replace with your actual API endpoint URL
+      const url = "http://localhost:5000/predict";
+
+      // Get data from input fields
+      const roomID = document.getElementById("room_id").value;
+      const datetime = document.getElementById("datetime").value;
+      const temperature = document.getElementById("temperature").value;
+      const humidity = document.getElementById("humidity").value;
+      const co2 = document.getElementById("co2").value;
+      const light = document.getElementById("light").value;
+      const pirClass = document.getElementById("pir_class").value || ""; // Optional
+
+      // Prepare data as JSON
+      const data = {
+        room_ID: roomID,
+        datetime: datetime,
+        temperature: temperature,
+        humidity: humidity,
+        co2: co2,
+        light: light,
+        pir_classes: pirClass, // Optional, include if used in your API
+      };
+
+      // Send POST request using fetch API
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);  // Log the response data
+    
+        const prediction = data.predicted_occupancy;
+        const probability = data.probability;
+        document.getElementById("prediction").innerHTML = `Chances of occupancy :${probability.toFixed(2)}%`;
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("prediction").innerHTML = "Error: Failed to predict occupancy.";
+      });
+    }
+  </script>
+</body>
+</html>
