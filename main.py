@@ -151,7 +151,7 @@ def predict_occupancy():
             return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    app.run()
+    #app.run()
 
 #if __name__ == "__main__":
     #port = int(os.environ.get("PORT", 5000))
