@@ -13,13 +13,13 @@ import pickle
 
 
 
-with open("C://Users//Aastha Verma//room//rooms_scaler.z",'rb') as f:
+with open("rooms_scaler.z",'rb') as f:
     rooms_scaler=joblib.load(f)
 
     
 # Load the XGBoost model from the pickle file                           
 try:
-    with open('C://Users//Aastha Verma//room//xgb_classifier.pkl', 'rb') as f:
+    with open('xgb_classifier.pkl', 'rb') as f:
         model = pickle.load(f)
 except FileNotFoundError:
     print("Error: Model file not found!")
@@ -92,7 +92,7 @@ def predict_occupancy():
                 
             # Get the corresponding model for the given room ID
                 
-            with open(f"C://Users//Aastha Verma//room//room_models789//{room_id}.z",'rb') as f:
+            with open(f"room_models789//{room_id}.z",'rb') as f:
                 modelh=pickle.load(f)
             if modelh is None:
                 print(f"Error: Model not found for room ID {room_id}")
