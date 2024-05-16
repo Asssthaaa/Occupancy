@@ -111,7 +111,8 @@
       // Get data from input fields
       const roomID = document.getElementById("room_id").value;
       const datetime = document.getElementById("datetime").value;
-
+      console.log(roomID);
+      console.log(datetime);
       // Prepare data as JSON
       const data = {
         room_ID: roomID,
@@ -126,6 +127,7 @@
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         const prediction = data.predicted_occupancy;
         const probability = data.probability;
         document.getElementById("prediction").innerHTML = `Chances of occupancy: (Probability: ${probability}%)`;
